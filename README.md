@@ -5,7 +5,7 @@ Kook is a Telegram group companion with configurable personalities, contextual A
 ## Run locally
 1. Create a Telegram bot with @BotFather.
 2. Copy `.env.example` to `.env` and set `BOT_TOKEN` and your numeric `OWNER_ID`.
-3. Add at least one provider key (`GEMINI_API_KEY`, `GROQ_API_KEY`, or `OPENROUTER_API_KEY`) for AI replies.
+3. Add at least one provider key for AI replies. Supported providers (automatic fallback order): OpenAI, Anthropic Claude, Gemini, DeepSeek, GLM, xAI Grok, Groq, and OpenRouter. Set the matching `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GEMINI_API_KEY`, `DEEPSEEK_API_KEY`, `GLM_API_KEY`, `XAI_API_KEY`, `GROQ_API_KEY`, or `OPENROUTER_API_KEY`. Each provider is optional; failed providers are skipped and the next configured provider is tried. Model names can be overridden with the corresponding `*_MODEL` environment variable.
 4. Install Python 3.11+: `pip install -r requirements.txt`
 5. Start: `python main.py`
 
