@@ -171,11 +171,6 @@ async def chat_ai(u,c):
         if len(arr)>5: return
     s=get_settings(chat.id); remember(chat.id,m.from_user.id,'user',text)
     hist=recent_memory(chat.id,10)
-    async with c.bot:
-        pass
-    try:
-        async with_dummy=False
-    except Exception: pass
     try:
         await c.bot.send_chat_action(chat.id,'typing')
         answer=await ask(text,s['personality'],hist)
