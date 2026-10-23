@@ -128,7 +128,7 @@ async def panel(u,c):
     await u.effective_message.reply_text('Kook panel\n/personality — group personality\n/welcome on|off\n/setwelcome text\n/health')
 async def health(u,c):
     if not owner(u.effective_user.id): return await u.effective_message.reply_text('Owner only 🔒')
-    await u.effective_message.reply_text(f'Kook running; uptime {int(time.time()-STARTED)}s; database OK; AI configured: '+str(any(__import__('config').__dict__[k] for k in ('GEMINI_API_KEY','GROQ_API_KEY','OPENROUTER_API_KEY'))))
+    await u.effective_message.reply_text(f'Kook running; uptime {int(time.time()-STARTED)}s; database OK; AI configured: '+str(any(__import__('config').__dict__.get(k) for k in ('OPENAI_API_KEY','ANTHROPIC_API_KEY','GEMINI_API_KEY','DEEPSEEK_API_KEY','GLM_API_KEY','XAI_API_KEY','GROQ_API_KEY','OPENROUTER_API_KEY'))))
 async def lock(u,c):
     if not await admin_required(u,c): return await u.effective_message.reply_text('Admins only 😶')
     from telegram import ChatPermissions
