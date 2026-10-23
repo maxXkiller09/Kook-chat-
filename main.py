@@ -198,7 +198,7 @@ def main():
     http_app.router.add_get('/', health_http)
     http_app.router.add_get('/health', health_http)
     def polling():
-        app.run_polling(allowed_updates=Update.ALL_TYPES)
+        app.run_polling(allowed_updates=Update.ALL_TYPES, stop_signals=None)
     log.info('Kook starting: HTTP health server and Telegram polling')
     threading.Thread(target=polling, name='telegram-polling', daemon=True).start()
     web.run_app(http_app, host='0.0.0.0', port=int(os.environ.get('PORT', '10000')), access_log=None)
