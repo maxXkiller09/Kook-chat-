@@ -1,1 +1,20 @@
-# Kook-chat-
+# Kook — Savage Hinglish Telegram Bot
+
+Kook is a Telegram group companion with configurable personalities, contextual AI replies, SQLite conversation memory, welcome messages, moderation, warnings, chat locks, group utilities, and Tic-Tac-Toe. **AI image generation is intentionally excluded.**
+
+## Run locally
+1. Create a Telegram bot with @BotFather.
+2. Copy `.env.example` to `.env` and set `BOT_TOKEN` and your numeric `OWNER_ID`.
+3. Add at least one provider key (`GEMINI_API_KEY`, `GROQ_API_KEY`, or `OPENROUTER_API_KEY`) for AI replies.
+4. Install Python 3.11+: `pip install -r requirements.txt`
+5. Start: `python main.py`
+
+## Deploy to Render
+Use the repository's `render.yaml` as a Background Worker blueprint, then add secrets in Render Environment settings. Never commit `.env` or API keys. Confirm current Render free-plan and persistent-disk eligibility before deployment because plan rules can change.
+
+## Commands
+`/start`, `/help`, `/personality`, `/welcome`, `/setwelcome`, `/ban`, `/kick`, `/mute`, `/unmute`, `/warn`, `/warns`, `/purge`, `/pin`, `/unpin`, `/id`, `/groupinfo`, `/admins`, `/lock`, `/unlock`, `/game`, `/panel`, `/health`.
+
+**Permissions:** give the bot administrator rights for moderation commands. `/panel` and `/health` are owner-only based on `OWNER_ID`. This initial implementation does not yet expose a full per-command permission editor.
+
+**Privacy and Telegram limits:** group AI replies require mentioning the bot or replying to it. For general group message visibility, adjust Telegram BotFather privacy settings if appropriate. Whisper-style messages are not end-to-end encrypted. Voice-chat participation and automatic voice-chat join events are not implemented in this initial repo version.
