@@ -179,8 +179,14 @@ async def chat_ai(u,c):
     except Exception as e:
         log.exception('AI handler failed')
         await m.reply_text('Oops, AI glitch ho gaya 😭')
+async def health_http(request):
+    from aiohttp import web
+    return web.json_response({'status': 'ok', 'service': 'Kook Telegram bot', 'uptime_seconds': int(time.time() - STARTED)})
+
 def main():
     if not BOT_TOKEN: raise RuntimeError('BOT_TOKEN missing; set it in environment')
+    import os, threading
+    from aiohttp import web
     init_db()
     app=Application.builder().token(BOT_TOKEN).build()
     handlers=[('start',start),('help',help_cmd),('personality',personality),('welcome',welcome),('setwelcome',setwelcome),('ban',ban),('kick',kick),('mute',mute),('unmute',unmute),('warn',warn),('warns',warns),('purge',purge),('pin',pin),('unpin',unpin),('id',id_cmd),('groupinfo',groupinfo),('admins',admins),('panel',panel),('health',health),('lock',lock),('unlock',unlock),('game',game),('tictactoe',game),('xo',game)]
@@ -188,6 +194,13 @@ def main():
     app.add_handler(CallbackQueryHandler(xo_click,pattern='^xo:'))
     app.add_handler(MessageHandler(filters.StatusUpdate.NEW_CHAT_MEMBERS,new_members))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND,chat_ai))
-    log.info('Kook starting')
-    app.run_polling(allowed_updates=Update.ALL_TYPES)
+    http_app = web.Application()
+    http_app.router.add_get('/', health_http)
+    http_app.router.add_get('/health', health_http)
+    def polling():
+        app.run_polling(allowed_updates=Update.ALL_TYPES)
+    log.info('Kook starting: HTTP health server and Telegram polling')
+    threading.Thread(target=polling, name='telegram-polling', daemon=True).start()
+    web.run_app(http_app, host='0.0.0.0', port=int(os.environ.get('PORT', '10000')), access_log=None)
+
 if __name__=='__main__': main()
