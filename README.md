@@ -18,3 +18,7 @@ Use the repository's `render.yaml` as a Background Worker blueprint, then add se
 **Permissions:** give the bot administrator rights for moderation commands. `/panel` and `/health` are owner-only based on `OWNER_ID`. This initial implementation does not yet expose a full per-command permission editor.
 
 **Privacy and Telegram limits:** group AI replies require mentioning the bot or replying to it. For general group message visibility, adjust Telegram BotFather privacy settings if appropriate. Whisper-style messages are not end-to-end encrypted. Voice-chat participation and automatic voice-chat join events are not implemented in this initial repo version.
+
+
+### Render start-command troubleshooting
+The bot must run as a **Background Worker**, not a web service. The repository blueprint uses `python -u main.py` and the root `Procfile` declares `worker: python -u main.py`. If Render logs still show `gunicorn your_application.wsgi`, the existing Render service has a dashboard-level Start Command override or was created as a Web Service. Update that service's Start Command to `python -u main.py`, or create/sync a Background Worker from this repository's `render.yaml`; a repository commit cannot override a manually configured dashboard command by itself.
